@@ -23,7 +23,19 @@ public class PlayerController : MonoBehaviour {
 	// fixed FPS? see notes on `void Update()`
 	// not controlled by framerate
 	private void FixedUpdate() {
+		cueControls();
+	}
+	
+	// Update is called once per frame
+	// NOTE: this is bad for physics because
+	// if someone has a better gaming computer
+	// they're FPS is higher, so this will happen
+	// more often then someone with a low FPS
+	void Update() {
+		
+	}
 
+	private void cueControls() {
 		// keys AD shooter left/right controls
 		float strafe = Input.GetAxis("Horizontal");
 		// keys WS shooter forward/back controls
@@ -41,15 +53,15 @@ public class PlayerController : MonoBehaviour {
 		}
 
 
-		Debug.Log("isCueShooting: " + isCueShooting + "\nisCueReleased: " + isCueReleased + "\ncueHitSpeed: " + cueHitSpeed);
-		Debug.Log("cueHitSpeed: " + cueHitSpeed);
+		// Debug.Log("isCueShooting: " + isCueShooting + "\nisCueReleased: " + isCueReleased + "\ncueHitSpeed: " + cueHitSpeed);
+		// Debug.Log("cueHitSpeed: " + cueHitSpeed);
 
 		// temp center cue ball until we have cuePosition from cue stick obj etc
 		cueHitPosition = new Vector3(rb.position.x / 2.0f, rb.position.y / 2.0f, rb.position.z / 2.0f);
 
 		// move the object (impluse like a hit)
-//		rb.AddForce(movement, cueSpeed);
-//		rb.AddForceAtPosition(cueHitDirection, cueHitPosition);
+		//		rb.AddForce(movement, cueSpeed);
+		//		rb.AddForceAtPosition(cueHitDirection, cueHitPosition);
 		if (isCueShooting && isCueReleased) {
 			rb.AddForceAtPosition(cueHitSpeed, cueHitPosition, ForceMode.Impulse);
 
@@ -62,14 +74,5 @@ public class PlayerController : MonoBehaviour {
 			// center ball by default
 			cueHitPosition = new Vector3(rb.position.x / 2.0f, rb.position.y / 2.0f, rb.position.z / 2.0f);
 		}
-	}
-	
-	// Update is called once per frame
-	// NOTE: this is bad for physics because
-	// if someone has a better gaming computer
-	// they're FPS is higher, so this will happen
-	// more often then someone with a low FPS
-	void Update() {
-		
 	}
 }
