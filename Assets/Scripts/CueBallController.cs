@@ -23,7 +23,7 @@ public class CueBallController : MonoBehaviour {
 	// fixed FPS? see notes on `void Update()`
 	// not controlled by framerate
 	private void FixedUpdate() {
-		cueControls();
+		shotControls();
 	}
 	
 	// Update is called once per frame
@@ -35,33 +35,24 @@ public class CueBallController : MonoBehaviour {
 		
 	}
 
-	private void cueControls() {
-		// keys AD shooter left/right controls
-		float strafe = Input.GetAxis("Horizontal");
-		// keys WS shooter forward/back controls
-		float forwardBackward = Input.GetAxis("Vertical");
+	private void shotControls() {
+		float shotSpeed = Input.GetAxis("Vertical");
 
-		// init the movement of the object (temp by WASD)
-		if (Mathf.Abs(strafe) > 0 || Mathf.Abs(forwardBackward) > 0) {
+		// get hit speed
+		if (shotSpeed > 0) {
 			isCueShooting = true;
 			isCueReleased = false;
 
-			cueHitSpeed += new Vector3(strafe, 0.0f, forwardBackward) * cueAcceleration;
+			cueHitSpeed += new Vector3(0.0f, 0.0f, shotSpeed) * cueAcceleration;
 		}
 		else {
 			isCueReleased = true;
 		}
 
-
-		// Debug.Log("isCueShooting: " + isCueShooting + "\nisCueReleased: " + isCueReleased + "\ncueHitSpeed: " + cueHitSpeed);
-		// Debug.Log("cueHitSpeed: " + cueHitSpeed);
-
 		// temp center cue ball until we have cuePosition from cue stick obj etc
 		cueHitPosition = new Vector3(rb.position.x / 2.0f, rb.position.y / 2.0f, rb.position.z / 2.0f);
 
 		// move the object (impluse like a hit)
-		//		rb.AddForce(movement, cueSpeed);
-		//		rb.AddForceAtPosition(cueHitDirection, cueHitPosition);
 		if (isCueShooting && isCueReleased) {
 			rb.AddForceAtPosition(cueHitSpeed, cueHitPosition, ForceMode.Impulse);
 
