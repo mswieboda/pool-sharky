@@ -58,11 +58,16 @@ public class CueBallController : MonoBehaviour {
 		}
 
 		// temp center cue ball until we have cuePosition from cue stick obj etc
-		cueHitPosition = new Vector3(rb.position.x / 2.0f, rb.position.y / 2.0f, rb.position.z / 2.0f);
+		Vector3 hitVector = cueGuide.transform.position;
+		cueHitPosition = new Vector3(hitVector.x * 2.0f, hitVector.y * 2.0f, hitVector.z * 2.0f);
+
+		Vector3 rotatedCueHitPosition = cueGuide.transform.localRotation * cueHitPosition;
+
+		Vector3 rotatedCueHitSpeed = cueGuide.transform.localRotation * cueHitSpeed;
 
 		// move the object (impluse like a hit)
 		if (isCueShooting && isCueReleased) {
-			rb.AddForceAtPosition(cueHitSpeed, cueHitPosition, ForceMode.Impulse);
+			rb.AddForceAtPosition(rotatedCueHitSpeed, rotatedCueHitPosition, ForceMode.Impulse);
 
 			// reset bools for shooting cue
 			isCueReleased = false;
@@ -70,8 +75,6 @@ public class CueBallController : MonoBehaviour {
 
 			// reset cue vars
 			cueHitSpeed = new Vector3();
-			// center ball by default
-			cueHitPosition = new Vector3(rb.position.x / 2.0f, rb.position.y / 2.0f, rb.position.z / 2.0f);
 		}
 	}
 
@@ -81,12 +84,12 @@ public class CueBallController : MonoBehaviour {
 		// Rotate using A and D
 		if (Input.GetKey(KeyCode.A)) {
 			cueGuide.transform.LookAt(cueGuide.transform);
-			cueGuide.transform.Rotate(Vector3.right * Time.deltaTime * Mathf.Pow(cueAcceleration, 2f));
+			cueGuide.transform.Rotate(Vector3.left * Time.deltaTime * Mathf.Pow(cueAcceleration, 2f));
 		}
 
 		if (Input.GetKey(KeyCode.D)) {
 			cueGuide.transform.LookAt(cueGuide.transform);
-			cueGuide.transform.Rotate(Vector3.left * Time.deltaTime * Mathf.Pow(cueAcceleration, 2f));
+			cueGuide.transform.Rotate(Vector3.right * Time.deltaTime * Mathf.Pow(cueAcceleration, 2f));
 		}
 	}
 }
