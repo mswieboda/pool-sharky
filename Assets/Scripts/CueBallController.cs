@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CueBallController : MonoBehaviour {
+	public GameObject cueGuide;
+	public GameObject cueBall;
+
 	public float cueAcceleration;
 	private Rigidbody rb;
 
@@ -12,11 +15,15 @@ public class CueBallController : MonoBehaviour {
 	private bool isCueShooting;
 	private bool isCueReleased;
 
+	private Vector3 cueGuideOffset;
+
 	// Use this for initialization
 	void Start() {
 		isCueShooting = false;
 		isCueReleased = false;
-		rb = GetComponent<Rigidbody>();
+		rb = cueBall.GetComponent<Rigidbody>();
+
+		cueGuideOffset = cueGuide.transform.position - cueBall.transform.position;
 	}
 
 	// NOTE: better for physics, because
@@ -24,6 +31,7 @@ public class CueBallController : MonoBehaviour {
 	// not controlled by framerate
 	private void FixedUpdate() {
 		shotControls();
+		rotateCueAimControls();
 	}
 	
 	// Update is called once per frame
@@ -64,6 +72,21 @@ public class CueBallController : MonoBehaviour {
 			cueHitSpeed = new Vector3();
 			// center ball by default
 			cueHitPosition = new Vector3(rb.position.x / 2.0f, rb.position.y / 2.0f, rb.position.z / 2.0f);
+		}
+	}
+
+	private void rotateCueAimControls() {
+		cueGuide.transform.position = cueBall.transform.position + cueGuideOffset;
+
+		// Rotate using A and D
+		if (Input.GetKey(KeyCode.A)) {
+			cueGuide.transform.LookAt(cueGuide.transform);
+			cueGuide.transform.Rotate(Vector3.right * Time.deltaTime * Mathf.Pow(cueAcceleration, 2f));
+		}
+
+		if (Input.GetKey(KeyCode.D)) {
+			cueGuide.transform.LookAt(cueGuide.transform);
+			cueGuide.transform.Rotate(Vector3.left * Time.deltaTime * Mathf.Pow(cueAcceleration, 2f));
 		}
 	}
 }
