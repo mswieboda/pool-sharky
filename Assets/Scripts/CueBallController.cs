@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class CueBallController : MonoBehaviour {
 	public float cueAcceleration;
 	private Rigidbody rb;
 
