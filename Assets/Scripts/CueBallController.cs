@@ -7,6 +7,8 @@ public class CueBallController : MonoBehaviour {
 	public GameObject cueBall;
 
 	public float cueAcceleration;
+	public float defaultCueRotationAcceleration;
+
 	private Rigidbody rb;
 
 	private Vector3 cueHitSpeed;
@@ -14,6 +16,8 @@ public class CueBallController : MonoBehaviour {
 
 	private bool isCueShooting;
 	private bool isCueReleased;
+
+	private float cueRotationAcceleration;
 
 	private Vector3 cueGuideOffset;
 
@@ -84,12 +88,19 @@ public class CueBallController : MonoBehaviour {
 		// Rotate using A and D
 		if (Input.GetKey(KeyCode.A)) {
 			cueGuide.transform.LookAt(cueGuide.transform);
-			cueGuide.transform.Rotate(Vector3.left * Time.deltaTime * Mathf.Pow(cueAcceleration, 2f));
+			cueGuide.transform.Rotate(Vector3.left * Time.deltaTime * Mathf.Pow(cueRotationAcceleration, 2f));
 		}
 
 		if (Input.GetKey(KeyCode.D)) {
 			cueGuide.transform.LookAt(cueGuide.transform);
-			cueGuide.transform.Rotate(Vector3.right * Time.deltaTime * Mathf.Pow(cueAcceleration, 2f));
+			cueGuide.transform.Rotate(Vector3.right * Time.deltaTime * Mathf.Pow(cueRotationAcceleration, 2f));
+		}
+
+		if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) {
+			cueRotationAcceleration += 0.25f;
+		}
+		else {
+			cueRotationAcceleration = defaultCueRotationAcceleration;
 		}
 	}
 }

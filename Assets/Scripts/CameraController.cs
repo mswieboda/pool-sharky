@@ -10,15 +10,11 @@ public class CameraController : MonoBehaviour {
 
 	private Camera cueCamera;
 	private AudioListener cueCameraAudio;
-	private Vector3 offset;
-	private float offsetYRotation;
 
 	// Use this for initialization
 	void Start () {
 		cueCamera = GetComponent<Camera>();
 		cueCameraAudio = cueCamera.GetComponent<AudioListener>();
-		offset = transform.position - cueBall.transform.position;
-		offsetYRotation = cueGuide.transform.rotation.y - transform.rotation.y;
 	}
 
 	void LateUpdate () {
