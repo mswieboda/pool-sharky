@@ -5,27 +5,30 @@ using UnityEngine;
 public class RackController : MonoBehaviour {
 
 	private Transform rackTransform;
-	private bool isRackingBalls;
+	private int rackDirection;
 
 	// Use this for initialization
 	void Start () {
-		isRackingBalls = false;
 		rackTransform = GetComponent<Transform>();
+		rackDirection = 1;
 	}
 
 	private void FixedUpdate () {
-		if (!isRackingBalls && Input.GetButtonDown("Rack")) {
-			isRackingBalls = true;
-//			Debug.Log("Rack the balls automatically");
-			rackBalls();
+		if (Input.GetButton("Rack")) {
+			if (Input.GetKey(KeyCode.LeftShift)) {
+				gameObject.SetActive(false);
+			}
+			else {
+				rackDirection *= -1;
+				rackBalls(rackDirection);
+			}
 		}
 	}
 
-	private void rackBalls() {
+	private void rackBalls(int direction) {
+		Vector3 newPosition = rackTransform.position;
+		newPosition.z += 30f + Random.Range(1f, 5f) * direction;
 
-		// rack them balls back n forth
-		rackTransform.Translate(new Vector3(1.0f, 0.0f, 0.0f));
-
-		isRackingBalls = false;
+		rackTransform.position = Vector3.MoveTowards(rackTransform.position, newPosition, 10f * Time.deltaTime);
 	}
 }
