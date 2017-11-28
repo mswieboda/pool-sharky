@@ -9,12 +9,14 @@ public class CameraController : MonoBehaviour {
 	public GameObject cueGhostGuide;
 
 	private Camera cueCamera;
+	private AudioListener cueCameraAudio;
 	private Vector3 offset;
 	private float offsetYRotation;
 
 	// Use this for initialization
 	void Start () {
 		cueCamera = GetComponent<Camera>();
+		cueCameraAudio = cueCamera.GetComponent<AudioListener>();
 		offset = transform.position - cueBall.transform.position;
 		offsetYRotation = cueGuide.transform.rotation.y - transform.rotation.y;
 	}
@@ -70,10 +72,14 @@ public class CameraController : MonoBehaviour {
 	void FixedUpdate () {
 		if (Input.GetButton("Alt Camera")) {
 			cueCamera.enabled = false;
+			cueCameraAudio.enabled = false;
+
 			angledViewCamera.SetActive(true);
 		}
 		else {
 			cueCamera.enabled = true;
+			cueCameraAudio.enabled = true;
+
 			angledViewCamera.SetActive(false);
 		}
 	}
